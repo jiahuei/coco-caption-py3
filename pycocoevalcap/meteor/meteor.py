@@ -10,6 +10,8 @@ import threading
 
 # Assumes meteor-1.5.jar is in the same directory as meteor.py.  Change as needed.
 METEOR_JAR = 'meteor-1.5.jar'
+
+
 # print METEOR_JAR
 
 
@@ -38,7 +40,8 @@ class Meteor:
             stat = self._stat(res[i][0], gts[i])
             eval_line += ' ||| {}'.format(stat)
         
-        self.meteor_p.stdin.write('{}\n'.format(eval_line))
+        self.meteor_p.stdin.write('{}\n'.format(eval_line).encode())
+        self.meteor_p.stdin.flush()
         for i in range(0, len(imgIds)):
             scores.append(float(self.meteor_p.stdout.readline().strip()))
         score = float(self.meteor_p.stdout.readline().strip())
@@ -53,8 +56,9 @@ class Meteor:
         # SCORE ||| reference 1 words ||| reference n words ||| hypothesis words
         hypothesis_str = hypothesis_str.replace('|||', '').replace('  ', ' ')
         score_line = ' ||| '.join(('SCORE', ' ||| '.join(reference_list), hypothesis_str))
-        self.meteor_p.stdin.write('{}\n'.format(score_line))
-        return self.meteor_p.stdout.readline().strip()
+        self.meteor_p.stdin.write('{}\n'.format(score_line).encode())
+        self.meteor_p.stdin.flush()
+        return self.meteor_p.stdout.readline().decode().strip()
     
     def _score(self, hypothesis_str, reference_list):
         self.lock.acquire()

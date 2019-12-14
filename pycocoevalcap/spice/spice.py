@@ -9,8 +9,8 @@ import tempfile
 
 # Assumes spice.jar is in the same directory as spice.py.  Change as needed.
 SPICE_JAR = 'spice-1.0.jar'
-TEMP_DIR = 'tmp'
-CACHE_DIR = 'cache'
+TEMP_DIR = os.environ.get('SPICE_TEMP_DIR', 'tmp')
+CACHE_DIR = os.environ.get('SPICE_CACHE_DIR', 'cache')
 
 
 class Spice:
@@ -50,7 +50,7 @@ class Spice:
         temp_dir = os.path.join(cwd, TEMP_DIR)
         if not os.path.exists(temp_dir):
             os.makedirs(temp_dir)
-        in_file = tempfile.NamedTemporaryFile(delete=False, dir=temp_dir)
+        in_file = tempfile.NamedTemporaryFile(delete=False, dir=temp_dir, mode='w+')
         json.dump(input_data, in_file, indent=2)
         in_file.close()
         

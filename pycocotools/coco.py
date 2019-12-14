@@ -240,7 +240,7 @@ class COCO:
                 if type(ann['segmentation']) == list:
                     # polygon
                     for seg in ann['segmentation']:
-                        poly = np.array(seg).reshape((len(seg) / 2, 2))
+                        poly = np.array(seg).reshape((len(seg) // 2, 2))
                         polygons.append(Polygon(poly, True, alpha=0.4))
                         color.append(c)
                 else:
@@ -282,23 +282,23 @@ class COCO:
         if 'caption' in anns[0]:
             imgIds = set([img['id'] for img in res.dataset['images']]) & set([ann['image_id'] for ann in anns])
             res.dataset['images'] = [img for img in res.dataset['images'] if img['id'] in imgIds]
-            for id, ann in enumerate(anns):
-                ann['id'] = id
+            for _id, ann in enumerate(anns):
+                ann['id'] = _id
         elif 'bbox' in anns[0] and not anns[0]['bbox'] == []:
             res.dataset['categories'] = copy.deepcopy(self.dataset['categories'])
-            for id, ann in enumerate(anns):
+            for _id, ann in enumerate(anns):
                 bb = ann['bbox']
                 x1, x2, y1, y2 = [bb[0], bb[0] + bb[2], bb[1], bb[1] + bb[3]]
                 ann['segmentation'] = [[x1, y1, x1, y2, x2, y2, x2, y1]]
                 ann['area'] = bb[2] * bb[3]
-                ann['id'] = id
+                ann['id'] = _id
                 ann['iscrowd'] = 0
         elif 'segmentation' in anns[0]:
             res.dataset['categories'] = copy.deepcopy(self.dataset['categories'])
-            for id, ann in enumerate(anns):
+            for _id, ann in enumerate(anns):
                 ann['area'] = sum(ann['segmentation']['counts'][2:-1:2])
                 ann['bbox'] = []
-                ann['id'] = id
+                ann['id'] = _id
                 ann['iscrowd'] = 0
         print('DONE (t=%0.2fs)' % ((datetime.datetime.utcnow() - time_t).total_seconds()))
         

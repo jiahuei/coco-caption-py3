@@ -60,11 +60,11 @@ def cook_refs(refs, eff=None, n=4):  # lhuang: oracle will call with "average"
     return reflen, maxcounts
 
 
-def cook_test(test, ref, eff=None, n=4):
+def cook_test(test, refs, eff=None, n=4):
     """Takes a test sentence and returns an object that
     encapsulates everything that BLEU needs to know about it."""
     
-    (reflen, refmaxcounts) = ref
+    reflen, refmaxcounts = refs
     testlen, counts = precook(test, n, True)
     
     result = {}
