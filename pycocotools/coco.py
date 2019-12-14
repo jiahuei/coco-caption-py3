@@ -197,7 +197,7 @@ class COCO:
         :return: anns (object array) : loaded ann objects
         """
         if type(ids) == list:
-            return [self.anns[id] for id in ids]
+            return [self.anns[_id] for _id in ids]
         elif type(ids) == int:
             return [self.anns[ids]]
     
@@ -208,7 +208,7 @@ class COCO:
         :return: cats (object array) : loaded cat objects
         """
         if type(ids) == list:
-            return [self.cats[id] for id in ids]
+            return [self.cats[_id] for _id in ids]
         elif type(ids) == int:
             return [self.cats[ids]]
     
@@ -219,7 +219,7 @@ class COCO:
         :return: imgs (object array) : loaded img objects
         """
         if type(ids) == list:
-            return [self.imgs[id] for id in ids]
+            return [self.imgs[_id] for _id in ids]
         elif type(ids) == int:
             return [self.imgs[ids]]
     
