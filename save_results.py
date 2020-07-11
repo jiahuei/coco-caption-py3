@@ -11,6 +11,9 @@ from coco_caption_py2.eval import evaluate_caption_json
 res_a = evaluate_caption_json(res_file="test_a.json", ann_file="captions_val2014.json")
 res_b = evaluate_caption_json(res_file="test_b.json", ann_file="captions_val2014.json")
 
+if not os.path.isdir("scores"):
+    os.makedirs("scores")
+
 for i, out_file in enumerate(("res_{}", "res_detailed_{}")):
     with open(os.path.join("scores", out_file.format("a")), "w") as f:
         json.dump(res_a[i], f)
