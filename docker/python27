@@ -1,10 +1,10 @@
 FROM ubuntu:20.04
 
 # https://askubuntu.com/a/981279
-sudo apt update
-sudo apt install python2.7 python-pip
+RUN sudo apt update
+RUN sudo apt install python2.7 python-pip
 
-pip2 install matplotlib==3.2.2 numpy==1.19.0 skimage==0.0
+RUN pip2 install matplotlib==3.2.2 numpy==1.19.0 skimage==0.0
 
 ### JAVA 8 ###
 # Required to run SPICE metric
