@@ -1,12 +1,12 @@
-FROM ubuntu:20.04
+FROM python:2
 
-# https://askubuntu.com/a/981279
-RUN sudo apt update
-RUN sudo apt install python2.7 python-pip
-
-RUN pip2 install matplotlib==3.2.2 numpy==1.19.0 skimage==0.0
+RUN pip install --no-cache-dir install matplotlib==2.2.5 numpy==1.16.6 scikit-image==0.14.5
 
 ### JAVA 8 ###
 # Required to run SPICE metric
 # Newer versions will raise warnings regarding "reflective access"
-RUN apt-get update && apt-get install -y openjdk-8-jdk
+
+COPY jce_policy-8.zip /jce_policy-8.zip
+COPY jdk-8u231-linux-x64.tar.gz /jdk-8u231-linux-x64.tar.gz
+COPY install-java /install-java
+RUN yes | bash /install-java/install-java.sh -f /jdk-8u231-linux-x64.tar.gz
