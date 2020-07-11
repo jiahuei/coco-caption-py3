@@ -16,9 +16,9 @@ if not os.path.isdir(os.path.join(CURR_DIR, "scores")):
     os.makedirs(os.path.join(CURR_DIR, "scores"))
 
 for i, out_file in enumerate(("res_{}", "res_detailed_{}")):
-    with open(os.path.join("scores", out_file.format("a")), "w") as f:
+    with open(os.path.join(CURR_DIR, "scores", out_file.format("a")), "w") as f:
         json.dump(res_a[i], f)
 
 for i, out_file in enumerate(("res_{}", "res_detailed_{}")):
-    with open(os.path.join("scores", out_file.format("b")), "w") as f:
+    with open(os.path.join(CURR_DIR, "scores", out_file.format("b")), "w") as f:
         json.dump(res_b[i], f)
