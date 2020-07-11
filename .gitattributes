@@ -1,4 +1,6 @@
 # These files are text and should be normalized (Convert crlf => lf)
+*.py text
+*.sh text
 *.tex text
 *.php text
 *.css text
