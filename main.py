@@ -107,3 +107,4 @@ if __name__ == "__main__":
         save_results()
     check_overall_score()
     check_detailed_score()
+    print("PASSED")
