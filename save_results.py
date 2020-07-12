@@ -6,7 +6,10 @@ Created on 11 Jul 2020 18:34:14
 
 import os
 import json
-from coco_caption_py2.eval import evaluate_caption_json
+import platform
+from coco_caption.eval import evaluate_caption_json
+
+assert platform.python_version().startswith("3.6")
 
 res_a = evaluate_caption_json(res_file="test_a.json", ann_file="captions_val2014.json")
 res_b = evaluate_caption_json(res_file="test_b.json", ann_file="captions_val2014.json")
