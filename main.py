@@ -78,20 +78,14 @@ def check_detailed_score():
                 continue
             elif k == "SPICE":
                 py2, py3 = res_a[0][imgid][k]['All']['f'], res_a[1][imgid][k]['All']['f']
-                if py2 > 0.01 and imgid not in good_ids:
-                    print(f"SPICE {imgid}")
-                continue
+                if py3 > 0.01:
+                    assert imgid in good_ids
             else:
                 py2, py3 = res_a[0][imgid][k], res_a[1][imgid][k]
-                if py2 > 0.5:
+                if py3 > 0.5:
                     assert imgid in good_ids
-
-            if abs(py2 - py3) >= 0.00001:
-                print(
-                    f"`res_detailed_a` {k} mismatch: {py2} (py2)    {py3} (py3)"
-                )
-            # assert abs(py2 - py3) < 0.00001, \
-            #     f"`res_detailed_a` {k} mismatch: {py2} (py2)    {py3} (py3)"
+            assert abs(py2 - py3) < 0.00001, \
+                f"`res_detailed_a` {k} mismatch: {py2} (py2)    {py3} (py3)"
 
     for imgid in res_b[0].keys():
         for k in res_b[0][imgid].keys():
@@ -99,14 +93,10 @@ def check_detailed_score():
                 continue
             elif k == "SPICE":
                 py2, py3 = res_b[0][imgid][k]['All']['f'], res_b[1][imgid][k]['All']['f']
-                continue
             else:
                 py2, py3 = res_b[0][imgid][k], res_b[1][imgid][k]
-
-            if abs(py2 - py3) >= 0.00001:
-                print(
-                    f"`res_detailed_b` {k} mismatch: {py2} (py2)    {py3} (py3)"
-                )
+            assert abs(py2 - py3) < 0.00001, \
+                f"`res_detailed_a` {k} mismatch: {py2} (py2)    {py3} (py3)"
 
 
 if __name__ == "__main__":
