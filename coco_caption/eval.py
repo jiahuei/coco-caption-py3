@@ -6,8 +6,8 @@ Created on 31 Mar 2020 23:02:57
 """
 
 import os
-from coco_caption_py2.pycocotools.coco import COCO
-from coco_caption_py2.pycocoevalcap.eval import COCOEvalCap
+from pycocotools.coco import COCO
+from coco_caption.pycocoevalcap.eval import COCOEvalCap
 
 COCO_DIR = os.path.dirname(os.path.realpath(__file__))
 
