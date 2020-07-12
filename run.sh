@@ -7,4 +7,4 @@ docker run -it \
     -v "${SCRIPT_ROOT}:/src" \
     -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY="$DISPLAY" \
     -u "$(id -u)":"$(id -g)" \
-    --rm jiahuei/python36:java8 python3 /src/save_results.py
+    --rm jiahuei/python36:java8 python3 /src/main.py

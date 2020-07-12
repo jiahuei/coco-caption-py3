@@ -29,7 +29,7 @@ def save_results():
         with open(os.path.join(SCORE_DIR, out_file.format("a")), "w") as f:
             json.dump(res_a[i], f)
 
-    for i, out_file in enumerate(("res_{}", "res_detailed_{}")):
+    for i, out_file in enumerate(("res_{}.json", "res_detailed_{}.json")):
         with open(os.path.join(SCORE_DIR, out_file.format("b")), "w") as f:
             json.dump(res_b[i], f)
 
@@ -46,25 +46,53 @@ def check_overall_score():
     with open(os.path.join(SCORE_DIR, "res_b.json"), "r") as f:
         res_b.append(json.load(f))
 
-    assert res_a[0] == res_a[1] and res_b[0] == res_b[1], "Python 2 and 3 overall results mismatch."
+    for k in res_a[0].keys():
+        assert abs(res_a[0][k] - res_a[1][k]) < 0.00001, \
+            f"`res_a` overall {k} mismatch: {res_a[0][k]} (py2)    {res_a[1][k]} (py3)"
+        assert abs(res_b[0][k] - res_b[1][k]) < 0.00001, \
+            f"`res_b` overall {k} mismatch: {res_a[0][k]} (py2)    {res_a[1][k]} (py3)"
 
 
 def check_detailed_score():
-    res_a = []
-    with open(os.path.join(TEST_DIR, "scores_py2", "res_a_detailed.json"), "r") as f:
-        res_a.append(json.load(f))
-    with open(os.path.join(SCORE_DIR, "res_a_detailed.json"), "r") as f:
-        res_a.append(json.load(f))
-    res_b = []
-    with open(os.path.join(TEST_DIR, "scores_py2", "res_b_detailed.json"), "r") as f:
-        res_b.append(json.load(f))
-    with open(os.path.join(SCORE_DIR, "res_b_detailed.json"), "r") as f:
-        res_b.append(json.load(f))
+    def load_json_to_dict(fp):
+        data = {}
+        with open(fp, "r") as ff:
+            sc = json.load(ff)
+        for _ in sc:
+            data[_["image_id"]] = _
+        return data
 
-    assert res_a[0] == res_a[1] and res_b[0] == res_b[1], "Python 2 and 3 detailed results mismatch."
+    res_a = [
+        load_json_to_dict(os.path.join(TEST_DIR, "scores_py2", "res_detailed_a.json")),
+        load_json_to_dict(os.path.join(SCORE_DIR, "res_detailed_a.json"))
+    ]
+
+    for imgid in res_a[0].keys():
+        for k in res_a[0][imgid].keys():
+            if k == "image_id":
+                continue
+            elif k == "SPICE":
+                continue
+                py2, py3 = res_a[0][imgid][k]['All']['f'], res_a[1][imgid][k]['All']['f']
+            else:
+                py2, py3 = res_a[0][imgid][k], res_a[1][imgid][k]
+                if py2 > 2:
+                    print(py2)
+                    print(res_a[0][imgid]["SPICE"]['All']['f'])
+
+            if abs(py2 - py3) >= 0.00001:
+                print(
+                    f"`res_detailed_a` {k} mismatch: {py2} (py2)    {py3} (py3)"
+                )
+            # assert abs(py2 - py3) < 0.00001, \
+            #     f"`res_detailed_a` {k} mismatch: {py2} (py2)    {py3} (py3)"
 
 
 if __name__ == "__main__":
-    save_results()
+    if not (
+            os.path.isfile(os.path.join(SCORE_DIR, "res_detailed_a.json")) and
+            os.path.isfile(os.path.join(SCORE_DIR, "res_detailed_b.json"))
+    ):
+        save_results()
     check_overall_score()
     check_detailed_score()
