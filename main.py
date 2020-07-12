@@ -72,13 +72,14 @@ def check_detailed_score():
             if k == "image_id":
                 continue
             elif k == "SPICE":
-                continue
                 py2, py3 = res_a[0][imgid][k]['All']['f'], res_a[1][imgid][k]['All']['f']
+                if py2 > 0.01:
+                    print(f"SPICE {imgid}")
+                continue
             else:
                 py2, py3 = res_a[0][imgid][k], res_a[1][imgid][k]
                 if py2 > 2:
-                    print(py2)
-                    print(res_a[0][imgid]["SPICE"]['All']['f'])
+                    print(f"{k} {imgid}")
 
             if abs(py2 - py3) >= 0.00001:
                 print(
