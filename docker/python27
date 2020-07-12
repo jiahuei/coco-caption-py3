@@ -1,0 +1,22 @@
+FROM python:2
+
+RUN pip install --no-cache-dir install matplotlib==2.2.5 numpy==1.16.6 scikit-image==0.14.5
+
+### JAVA 8 ###
+# https://linuxize.com/post/install-java-on-debian-10/#installing-openjdk-8
+# Required to run SPICE metric
+# Newer versions will raise warnings regarding "reflective access"
+
+RUN apt-get update
+RUN apt-get install -y apt-transport-https ca-certificates wget dirmngr gnupg software-properties-common
+
+RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
+RUN add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+
+RUN apt-get update && apt-get install -y adoptopenjdk-8-hotspot
+RUN java -version
+
+### Clean-up ###
+RUN apt-get clean
+
+CMD bash
